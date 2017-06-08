@@ -45,16 +45,23 @@ public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemsRecycler
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Item item = items.get(position);
 
         holder.titleTxt.setText(item.getTitle());
 
         holder.timeTxt.setText(TIME_FORMAT.format(item.getDate()));
 
-        //Я не горжусь этим решением, но, at least, оно работает...
-        //88 - суммарное число бокковых отступов 2-х TextView и ширина TextView, в которое помещается время в формате mm:ss
-        holder.titleTxt.setMaxWidth(screenSize - (DimensionsUtils.convertDpToPixel(88, holder.itemView.getContext())));
+        //После отрисовки расчитываем, какой максимальной ширины может быть название.
+        holder.timeTxt.post(new Runnable() {
+            @Override
+            public void run() {
+                final ViewGroup.MarginLayoutParams titleTxtLayoutParams = (ViewGroup.MarginLayoutParams) holder.titleTxt.getLayoutParams();
+                final ViewGroup.MarginLayoutParams timeTxtLayoutParams = (ViewGroup.MarginLayoutParams) holder.timeTxt.getLayoutParams();
+
+                holder.titleTxt.setMaxWidth(screenSize - (holder.timeTxt.getMeasuredWidth() + titleTxtLayoutParams.leftMargin + titleTxtLayoutParams.rightMargin + timeTxtLayoutParams.rightMargin + timeTxtLayoutParams.leftMargin));
+            }
+        });
     }
 
     @Override
