@@ -1,6 +1,5 @@
 package ru.arkadiy.ubanktest.ui.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ru.arkadiy.ubanktest.R;
 import ru.arkadiy.ubanktest.model.data.Item;
-import ru.arkadiy.ubanktest.ui.utils.DimensionsUtils;
 
 /**
  * Created by arkadiy.zakharov on 17.10.2016.
@@ -27,17 +25,15 @@ public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemsRecycler
 
     private final List<Item> items;
 
-    private int screenSize;
-
-    public ItemsRecyclerViewAdapter(Context context, List<Item> items) {
+    public ItemsRecyclerViewAdapter(List<Item> items) {
         this.items = items;
-
-        screenSize = DimensionsUtils.getScreenWidth(context);
     }
 
     @Override
     public ItemsRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item, parent, false);
+        //Разные варианты разметки с фиксированным временем справа
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item_v1, parent, false);
+//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_item_v2, parent, false);
 
         ItemsRecyclerViewAdapter.ViewHolder vh = new ItemsRecyclerViewAdapter.ViewHolder(v);
 
@@ -51,10 +47,6 @@ public class ItemsRecyclerViewAdapter extends RecyclerView.Adapter<ItemsRecycler
         holder.titleTxt.setText(item.getTitle());
 
         holder.timeTxt.setText(TIME_FORMAT.format(item.getDate()));
-
-        //Я не горжусь этим решением, но, at least, оно работает...
-        //88 - суммарное число бокковых отступов 2-х TextView и ширина TextView, в которое помещается время в формате mm:ss
-        holder.titleTxt.setMaxWidth(screenSize - (DimensionsUtils.convertDpToPixel(88, holder.itemView.getContext())));
     }
 
     @Override

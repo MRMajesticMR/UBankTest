@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         items = ItemsGenerator.generateItems(ITEMS_COUNT);
 
-        itemsRecyclerViewAdapter = new ItemsRecyclerViewAdapter(this, items);
+        itemsRecyclerViewAdapter = new ItemsRecyclerViewAdapter(items);
 
         itemsRecyclerView.setAdapter(itemsRecyclerViewAdapter);
         itemsRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
